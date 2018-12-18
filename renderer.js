@@ -20,11 +20,11 @@ class Screen{
         //listeners
 
         window.addEventListener('resize', this.onResize);
-        window.addEventListener("mousedown", mousedown);
+        //window.addEventListener("mousedown", mousedown);
 
         events.on('addObject', this.addObject);
 
-        this.onResize();
+        //this.onResize();
 
     }
 
@@ -103,4 +103,4 @@ class Screen{
     }
 }
 
-new Screen();
+scr = new Screen();
