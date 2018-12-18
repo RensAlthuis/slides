@@ -9,8 +9,10 @@ module.exports = class Square extends Object{
         this.h = h;
     }
 
-    moveTo(){
-        console.log("SQUARE");
+    moveTo(pos, offset){
+        this.x = pos.x-offset.x;
+        this.y = pos.y-offset.y;
+        console.log(pos.x, offset.x, pos.x - offset.x);
     }
 
     draw(ctx){

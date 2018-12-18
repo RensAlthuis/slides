@@ -14,7 +14,15 @@
     and Electron <script>document.write(process.versions.electron)</script>.
 
     <script>
-      // You can also require other files to run in this process
+      window.addEventListener('keyup', (ev) =>
+      {
+        console.log(ev.key);
+        if (ev.key == 'Escape'){
+        const remote = require('electron').remote
+        remote.getCurrentWindow().close()
+        }
+      }, true)
+
       const EventEmitter = require('events');
       events = new EventEmitter();
       require('./renderer.js');

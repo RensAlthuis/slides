@@ -9,10 +9,12 @@
     }*/
 
 const Square = require("./square.js");
+
 var sq = new Square();
+sq.zlevel = 0;
+
+var sq2 = new Square(x=10, y=10);
+sq2.zlevel = 1;
+
+events.emit('addObject', sq2);
 events.emit('addObject', sq);
-
-
-function mousedown(ev){
-    console.log(sq.isClicked(ev.clientX, ev.clientY));
-}

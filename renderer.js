@@ -3,7 +3,7 @@
 // All of the Node.js APIs are available in this process.
 
 class Screen{
-
+    
     constructor(){
         //variables
         this.anchors = [];
@@ -11,21 +11,22 @@ class Screen{
         this.context = this.canvas.getContext('2d');
         this.gridSize = {"width":2, "height":2};
         this.objects = [];
+        this.curClickedObj = null;
 
         //bindings
         this.onResize = this.onResize.bind(this);
         this.drawCanvas = this.drawCanvas.bind(this);
         this.addObject = this.addObject.bind(this);
+        this.mouseClicked = this.mouseClicked.bind(this);
+        this.mouseDragged = this.mouseDragged.bind(this);
 
         //listeners
-
         window.addEventListener('resize', this.onResize);
-        window.addEventListener("mousedown", mousedown);
-
+        window.addEventListener("mousedown", this.mouseClicked);
+        window.addEventListener("mousemove", this.mouseDragged);
         events.on('addObject', this.addObject);
 
         this.onResize();
-
     }
 
     addObject(obj){
@@ -99,7 +100,23 @@ class Screen{
     }
 
     mouseClicked(ev){
+        this.curClickedObj = null;
+        this.objects.forEach( (obj) =>{
+            if(obj.isClicked(ev.clientX, ev.clientY) && this.curClickedObj == null)
+                this.curClickedObj = {obj:obj, offset:{x:ev.clientX- obj.x, y:ev.clientY-obj.y}};
+            else if(obj.isClicked(ev.clientX, ev.clientY) && this.curClickedObj.zlevel < obj.zlevel)
+                this.curClickedObj = {obj:obj, offset:{x:ev.clientX- obj.x, y:ev.clientY-obj.y}};
+        });
 
+    }
+    mouseDragged(ev){
+        //dragging only left button
+        if (ev.buttons == 1){
+            if(this.curClickedObj != null){
+                this.curClickedObj.obj.moveTo({x:ev.clientX, y:ev.clientY}, this.curClickedObj.offset);
+                this.drawCanvas();
+            }
+        }
     }
 }
 
