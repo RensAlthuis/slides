@@ -39,14 +39,11 @@ newImg.src = './input.png';
         for(var i=0; i < orImgD.data.length; i+=4)
         {
             white = !(orImgD.data[i] < thresh && orImgD.data[i + 1] < thresh && orImgD.data[i + 2] < thresh);
-            if(white)
-            console.log("test");
             data[i] = white ? 255 : 0;
             data[i + 1] = white ? 255 : 0;
             data[i + 2] = white ? 255 : 0;
             data[i + 3] = orImgD.data[i + 3];
         }
-        console.log(data);
         var outData = [];
 
         //console.log(outImgD.data.length);
@@ -58,6 +55,9 @@ newImg.src = './input.png';
             outData[x + 3] = 255;
         }
 
+        var whitePixels = getWhitePixels(outData);
+        console.log(findOutline(whitePixels, outData));
+
         animAr = [];
         animAr.length = outData.length;
         animAr.fill(0);
@@ -67,7 +67,61 @@ newImg.src = './input.png';
         var clampedAnimAr = Uint8ClampedArray.from(animAr);
         console.log(clampedAnimAr);
         var outimg = new ImageData(Uint8ClampedArray.from(outData), WIDTH, HEIGHT);
-        animator = setInterval(drawAnimation, 10, outimg);
+        animator = setInterval(drawAnimation, 1, outimg);
+    }
+
+    function findOutline(whitePixels, orImage){
+        function searchNeighbour(orImage, outline, x, y){
+            var num = getWhitePixel(orImage, outline[i].x-x, outline[i].y-y);
+            var n = contains(whitePixels, num);
+            if(n != null) {
+                outline.push(num);
+                whitePixels[n] = null;
+            }
+        };
+
+        function contains(list, elem){
+            if (elem == null) return null;
+
+            for(var i = 0; i < list.length; i++){
+                if(JSON.stringify(list[i]) == JSON.stringify(elem)) return i;
+            }
+            return null;
+        };
+
+        function getWhitePixel(orImage, x, y){
+            var num = orImage[x*4 + y*WIDTH*4];
+            if (num == 255){
+                return {x:x, y:y};
+            }
+            return null;
+        };
+
+        var outline = [];
+        outline.push(whitePixels.pop());
+
+        for(var i=0; i < outline.length; i++){
+            searchNeighbour(orImage, outline, -1, -1);
+            searchNeighbour(orImage, outline, -1, +1);
+            searchNeighbour(orImage, outline, -1,   );
+            searchNeighbour(orImage, outline,  0, -1);
+            searchNeighbour(orImage, outline,  0, -1);
+            searchNeighbour(orImage, outline, +1, -1);
+            searchNeighbour(orImage, outline, +1, +1);
+            searchNeighbour(orImage, outline, +1,   );
+        }
+
+        return outline;
+    }
+
+
+    function getWhitePixels(orAr){
+        var newAr = [];
+        for(var i=0; i < orAr.length; i+=4){
+            if(orAr[i] == 255)
+                newAr.push({x: (i/4) % WIDTH, y: ~~((i/4) /WIDTH)});
+        }
+        return newAr;
     }
 
     function drawAnimation(sourceAr){
