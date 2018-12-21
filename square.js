@@ -1,31 +1,32 @@
-require("./object.js");
+var Obj = require('./object.js');
 
-module.exports = class Square extends Object{
-    constructor(x=0, y=0, w=100, h=100){
-        super();
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+module.exports = class Square extends Obj{
+    constructor(args){
+        super(args);
+        this.w = args.w;
+        this.h = args.h;
     }
 
-    moveTo(pos, offset){
-        this.x = pos.x-offset.x;
-        this.y = pos.y-offset.y;
-        console.log(pos.x, offset.x, pos.x - offset.x);
-    }
 
     draw(ctx){
+        var px = this.anchor.x - this.offset.x;
+        var py = this.anchor.y - this.offset.y;
         ctx.strokeStyle = '#FFFFFF';
-        ctx.rect(this.x, this.y, this.w, this.h);
+        ctx.rect(px, py, this.w, this.h);
         ctx.stroke();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(this.anchor.x-2, this.anchor.y-2, 4, 4);
+        ctx.stroke();
+
     }
 
     isClicked(x, y){
-        if (x >= this.x &&
-            x <= this.x + this.w &&
-            y >= this.y &&
-            y <= this.y + this.h)
+        var px = this.anchor.x - this.offset.x;
+        var py = this.anchor.y - this.offset.y;
+        if (x >= px &&
+            x <= px + this.w &&
+            y >= py &&
+            y <= py + this.h)
         {
             return true;
         }

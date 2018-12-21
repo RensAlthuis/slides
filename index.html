@@ -7,16 +7,9 @@
   <body id='body'>
     <canvas id="myCanvas" style='position:absolute; left:0px; top:0px; border:3px'>
     </canvas>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-
     <script>
       window.addEventListener('keyup', (ev) =>
       {
-        console.log(ev.key);
         if (ev.key == 'Escape'){
         const remote = require('electron').remote
         remote.getCurrentWindow().close()

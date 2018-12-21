@@ -3,7 +3,7 @@
 // All of the Node.js APIs are available in this process.
 
 class Screen{
-    
+
     constructor(){
         //variables
         this.anchors = [];
@@ -96,28 +96,46 @@ class Screen{
     }
 
     loopAnchors(f){
-        this.anchors.forEach(f);
+
+        //Object anchors
+        this.objects.forEach((obj) => {
+            f(obj.anchor);
+        });
+
+        //Grid anchors X
+        for(var x = 1; x < this.gridSize.width; x++){
+            var delta = window.innerWidth/this.gridSize.width;
+            f({x:delta*x, y:0});
+            f({x:delta*x, y:window.innerHeight});
+        }
+
+        //Grid anchors Y
+        for(var y = 1; y < this.gridSize.height; y++){
+            var delta = window.innerHeight/this.gridSize.height;
+            f({x:0, y:delta*y});
+            f({x:window.innerWidth, y:delta*y});
+        }
     }
 
     mouseClicked(ev){
         this.curClickedObj = null;
         this.objects.forEach( (obj) =>{
-            if(obj.isClicked(ev.clientX, ev.clientY) && this.curClickedObj == null)
-                this.curClickedObj = {obj:obj, offset:{x:ev.clientX- obj.x, y:ev.clientY-obj.y}};
-            else if(obj.isClicked(ev.clientX, ev.clientY) && this.curClickedObj.zlevel < obj.zlevel)
-                this.curClickedObj = {obj:obj, offset:{x:ev.clientX- obj.x, y:ev.clientY-obj.y}};
+            if(obj.isClicked(ev.clientX, ev.clientY) && this.curClickedObj == null ||
+               obj.isClicked(ev.clientX, ev.clientY) && this.curClickedObj.zlevel < obj.zlevel)
+                this.curClickedObj = {obj:obj, offset:{x:ev.clientX- obj.anchor.x, y:ev.clientY-obj.anchor.y}};
         });
 
     }
+
     mouseDragged(ev){
         //dragging only left button
         if (ev.buttons == 1){
             if(this.curClickedObj != null){
-                this.curClickedObj.obj.moveTo({x:ev.clientX, y:ev.clientY}, this.curClickedObj.offset);
+                this.curClickedObj.obj.moveTo({x:ev.clientX, y:ev.clientY}, this.curClickedObj.offset, !ev.shiftKey);
                 this.drawCanvas();
             }
         }
     }
 }
 
-new Screen();
+scr = new Screen();
