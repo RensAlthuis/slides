@@ -8,12 +8,55 @@ let WIDTH = 640;
 let HEIGHT = 480;
 let animIndex = 0; //Line height animator is at
 
-newImg.src = './Scrooge.png';
 
-    newImg.onload = function(){
-    scr.context.drawImage(newImg,10,10);
-    orImgD = scr.context.getImageData(0,0,WIDTH,HEIGHT);
-    blackWhite();
+
+window.onkeyup = function(event){
+        var key = event.key;
+        var output = document.getElementById("console");
+        var input = output.value;
+        if(key == "Enter"){
+            if(input.startsWith("limg"))
+                {
+                    if(input.substr(5).includes(" "))
+                    {
+                        correctInput(false);
+                        console.log("Incorrect arguments");
+                    }
+                    else 
+                    if(input[4] != " ")
+                    {
+                        output.value="Read image at arg0"
+                    }
+                    else
+                    {
+                        correctInput(true);
+                        Limg(input.substr(5));
+                    }
+                }
+                else
+                {
+                    console.log("Unrecognized command");
+                    correctInput(false);
+                }
+        }
+    }
+
+    function correctInput(correct){
+        var target = document.getElementById("prefixc");
+        target.readOnly = false;
+        target.value = correct ? ">" : "X";
+        target.readOnly = true;
+    }
+
+    //Searches an image starting at the current directory. May fail
+    function Limg(source){
+        var curDir = './'
+        newImg.src = curDir.concat(source);
+        newImg.onload = function(){
+            img.context.drawImage(newImg,10,10);
+            orImgD = img.context.getImageData(0,0,WIDTH,HEIGHT);
+            blackWhite();
+            }
     }
 
     function hasBNeighbour(arr, index){
@@ -32,7 +75,7 @@ newImg.src = './Scrooge.png';
     function blackWhite(){
         var white = false;
         var outline = false;
-        var thresh = 31;
+        var thresh = 100;
         //newImgD.data = orImgD.data.slice();
         var data = [];
         for(var i=0; i < orImgD.data.length; i+=4)
@@ -45,7 +88,6 @@ newImg.src = './Scrooge.png';
             //data[i + 3] = 255;
             data[i + 3] = orImgD.data[i + 3];
         }
-
         var bwImage = new ImageData(Uint8ClampedArray.from(data), WIDTH, HEIGHT);
         scr.context.putImageData(bwImage, 0, 0);
         var outData = [];
@@ -56,15 +98,13 @@ newImg.src = './Scrooge.png';
         for(var x=0; x < data.length; x+=4){
             outline = (data[x] == 255) && hasBNeighbour(data, x);
             outData[x] = outline ? 255 : 0;
-            outData[x + 1] = outline ? 100 : 0;
+            outData[x + 1] = outline ? 255 : 0;
             outData[x + 2] = outline ? 255 : 0;
             outData[x + 3] = outline ? 255 : 0;
         }
-
         var whitePixels = getWhitePixels(outData);
         console.log("whitepixels "+whitePixels.length);
         var allOutlines = [];
-
         while(whitePixels.length > 0)
         {
             var startE = {};
@@ -77,6 +117,7 @@ newImg.src = './Scrooge.png';
                 allOutlines.push(actualOutline);
             }
         }
+        //scr.drawCanvas();
         console.log("outline "+actualOutline.length);
 
         animAr = createEmpty(outData.length, false);
@@ -94,7 +135,7 @@ newImg.src = './Scrooge.png';
         //animator = setInterval(drawAnimation, 1, outimg);
         console.log(actualOutline.length);
         //drawOutLineAnim(actualOutline,noutImg);
-
+        scr.drawCanvas();
         while(allOutlines.length > 0)
         {
             var animator = null;
@@ -200,8 +241,8 @@ newImg.src = './Scrooge.png';
         //{
             //console.log("ok" + (tar.x*4 + WIDTH*4*tar.y + i));
         target.data[tar.x*4 + WIDTH*4*tar.y + 0] = 255;
-        target.data[tar.x*4 + WIDTH*4*tar.y + 1] = 100;
-        target.data[tar.x*4 + WIDTH*4*tar.y + 2] = 255;
+        target.data[tar.x*4 + WIDTH*4*tar.y + 1] = 0;
+        target.data[tar.x*4 + WIDTH*4*tar.y + 2] = 0;
         target.data[tar.x*4 + WIDTH*4*tar.y + 3] = 255;
         //}
 

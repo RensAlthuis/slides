@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "electron-debug": "^2.0.0",
+    "jQuery": "^1.7.4",
+    "jquery": "^3.3.1",
     "remote": "^0.2.6",
     "sharp": "^0.21.1"
   }

@@ -34,6 +34,8 @@ class Screen{
     }
 
     drawBackground(){
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         this.context.fillStyle = '#000000';
         this.context.fillRect(0,0, window.innerWidth, window.innerHeight);
     };
@@ -80,13 +82,11 @@ class Screen{
 
     drawCanvas(){
         this.drawBackground();
-        this.drawGrid();
+        //this.drawGrid();
         this.drawObjects();
     };
 
     onResize(){
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
         this.drawCanvas();
     };
 
