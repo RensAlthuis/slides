@@ -4,10 +4,10 @@
 
 class Screen{
 
-    constructor(){
+    constructor(screenName){
         //variables
         this.anchors = [];
-        this.canvas = document.getElementById("myCanvas");
+        this.canvas = document.getElementById(screenName);
         this.context = this.canvas.getContext('2d');
         this.gridSize = {"width":2, "height":2};
         this.objects = [];
@@ -103,4 +103,5 @@ class Screen{
     }
 }
 
-scr = new Screen();
+scr = new Screen("myCanvas");
+img = new Screen("picCanvas");
