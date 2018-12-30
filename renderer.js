@@ -4,25 +4,27 @@
 
 class Screen{
 
-    constructor(screenName){
+    constructor(screenName, stat = ""){
         //variables
         this.anchors = [];
         this.canvas = document.getElementById(screenName);
+        this.picStat = (stat== "") ? null : document.getElementById(stat);
+        
         this.context = this.canvas.getContext('2d');
-        this.gridSize = {"width":2, "height":2};
-        this.objects = [];
+        //this.gridSize = {"width":2, "height":2};
+        //this.objects = [];
 
         //bindings
-        this.onResize = this.onResize.bind(this);
-        this.drawCanvas = this.drawCanvas.bind(this);
-        this.addObject = this.addObject.bind(this);
+        //this.onResize = this.onResize.bind(this);
+        //this.drawCanvas = this.drawCanvas.bind(this);
+        //this.addObject = this.addObject.bind(this);
 
         //listeners
 
-        window.addEventListener('resize', this.onResize);
+        //window.addEventListener('resize', this.onResize);
         //window.addEventListener("mousedown", mousedown);
 
-        events.on('addObject', this.addObject);
+        //events.on('addObject', this.addObject);
 
         //this.onResize();
 
@@ -104,4 +106,4 @@ class Screen{
 }
 
 scr = new Screen("myCanvas");
-img = new Screen("picCanvas");
+img = new Screen("picCanvas", "picStat");
