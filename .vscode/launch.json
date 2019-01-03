@@ -9,7 +9,7 @@
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
             "env": {},
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
             "stopOnEntry": false,
             "runtimeArgs": [
                 "."

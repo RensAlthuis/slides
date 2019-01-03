@@ -2,31 +2,26 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-class Screen{
+module.exports = class Screen{
 
-    constructor(screenName, stat = ""){
+    constructor(screenName){
         //variables
         this.anchors = [];
         this.canvas = document.getElementById(screenName);
-        this.picStat = (stat== "") ? null : document.getElementById(stat);
-        
         this.context = this.canvas.getContext('2d');
-        //this.gridSize = {"width":2, "height":2};
-        //this.objects = [];
+        this.gridSize = {"width":2, "height":2};
+        this.objects = [];
 
         //bindings
-        //this.onResize = this.onResize.bind(this);
-        //this.drawCanvas = this.drawCanvas.bind(this);
-        //this.addObject = this.addObject.bind(this);
+        this.onResize = this.onResize.bind(this);
+        this.drawCanvas = this.drawCanvas.bind(this);
+        this.addObject = this.addObject.bind(this);
 
         //listeners
-
-        //window.addEventListener('resize', this.onResize);
-        //window.addEventListener("mousedown", mousedown);
-
-        //events.on('addObject', this.addObject);
-
-        //this.onResize();
+        window.addEventListener('resize', this.onResize);
+        // window.addEventListener("mousedown", mousedown);
+        events.on('addObject', this.addObject);
+        this.onResize();
 
     }
 
@@ -44,11 +39,11 @@ class Screen{
 
     drawGrid(){
         var ctx = this.context;
-
         ctx.strokeStyle = '#FFFFFF';
-
         var dashLength = 10;
         ctx.setLineDash([dashLength]);
+
+        //vertical gridlines 
         for(var x = 1; x < this.gridSize.width; x++){
             if(x == this.gridSize.width/2)
                 ctx.setLineDash([]);
@@ -62,6 +57,7 @@ class Screen{
             ctx.stroke();
         }
 
+        //horizontal gridlines 
         for(var y = 1; y < this.gridSize.height; y++){
             if(y == this.gridSize.height/2)
                 ctx.setLineDash([]);
@@ -84,7 +80,7 @@ class Screen{
 
     drawCanvas(){
         this.drawBackground();
-        //this.drawGrid();
+        this.drawGrid();
         this.drawObjects();
     };
 
@@ -104,6 +100,3 @@ class Screen{
 
     }
 }
-
-scr = new Screen("myCanvas");
-img = new Screen("picCanvas", "picStat");

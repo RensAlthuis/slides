@@ -1,68 +1,44 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <script>window.$ = window.jQuery = require('./jquery-3.3.1.min')</script>
-    <style>
-
-        html, body {margin: 0; height: 100%; overflow: hidden}
-      
-        footer {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 32px;
-        width: 100%;
-      }
-        input {
-          border: none;
-          color: red;
-          width: 100%;
-          height: 100%;
-          left: 30;
-          background: none;
-        }
-
-        
-      </style>
-<title>OutlineBranch!</title> 
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script>window.$ = window.jQuery = require('./jquery-3.3.1.min')</script>
+  <title>OutlineBranch!</title>
 </head>
-  <body id='body'>
-    <canvas id="myCanvas" style='position:absolute; left:0px; top:0px; border:3px' width=640 height=480>
-    </canvas>
-    <div>
-        <canvas id="picCanvas" style="float: left; vertical-align: top; border: 3px solid black;" width=300 height=300><h3>sometext</h3></canvas>
-        <h4 id ="picStat" style="position: relative; left: 10px">(NaN, NaN)</h4>
-        <h4 id ="picStat" style="position: relative; left: 10px;">Reads an image into black and white, then processes the outline. Saves it to a special gbf binary file. The 
-        window might freeze during processing. The duration of which is largely dependent on the image size and contrast. Pictures with a clear outline are processed faster 
-      and lead to better results.</h4>
-    </div>
-    <footer>
-      <table style="width:40%">
-        <tr>
-          <td width=10>
-              <input type="text" id="prefixc" value=">" readonly></input>
-          </td>
-          <td>
-              <input type="text" id="console" value=""></input>
-          </td>
-        </tr>
-      </table>
-    </footer>
-    <script>
-      function hooray(e){
-        var something = $("console");
-        console.log("pressed I was"+something);
-      }
-      $(document).ready(function(){
-        console.log("hooray");
-      });
-      console.log("ugh");
-      // You can also require other files to run in this process
-      const EventEmitter = require('events');
-      events = new EventEmitter();
-      require('./renderer.js');
-      require('./test.js');
-</script>
-</body>
-</html>
 
+<body id='body'>
+  <canvas id="mainCanvas" width=640 height=480> </canvas>
+  <div style="position: absolute; left:0px; top:0px; width:100%; height:100%">
+  <canvas id="picCanvas" width=300 height=300></canvas>
+
+  <div id="picStat">
+    <p>
+      (NaN, NaN)
+    </p>
+    <p>
+      Reads an image into black and white, then processes the outline. Saves it to a special gbf binary file. The
+      window might freeze during processing. The duration of which is largely dependent on the image size and contrast.
+      Pictures with a clear outline are processed faster
+      and lead to better results.
+    </p>
+  </div>
+
+  <footer>
+    <div id="consoleDiv">
+      <p id="consolePrefix">></p>
+      <input type="text" id="console" value=""></input>
+    </div>
+  </footer>
+
+  </div>
+  <script>
+    const EventEmitter = require('events');
+    events = new EventEmitter();
+
+    require('./Screen.js');
+    require('./test.js');
+  </script>
+</body>
+
+</html>
