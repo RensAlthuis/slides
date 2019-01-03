@@ -7,8 +7,14 @@ var consoleCommands = require("./ConsoleCommands.js")();
 var cli = new CLI("console", consoleCommands);
 window.onkeyup = async function (event) {
     if (event.key == "Enter") {
+        var prefix = document.getElementById("consolePrefix")
         var cons = document.getElementById("console");
-        cli.executeCommand(cons.value, cons);
+        if (cli.executeCommand(cons.value, cons)){
+            prefix.innerHTML = '>';
+        }
+        else{
+            prefix.innerHTML = 'X';
+        }
     }
 }
 

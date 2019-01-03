@@ -11,7 +11,7 @@ module.exports = class CLI{
         var args = words.slice(1);
 
         if (input in this.commands)
-            this.commands[input](target, args);
+            return this.commands[input](target, args);
         else
             console.log("Unrecognized command");
     }
