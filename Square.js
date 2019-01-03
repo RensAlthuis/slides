@@ -1,4 +1,4 @@
-var Obj = require('./object.js');
+var Obj = require("./Object.js");
 
 module.exports = class Square extends Obj{
     constructor(args){

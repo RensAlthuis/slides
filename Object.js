@@ -3,15 +3,15 @@
 module.exports = class Obj{
     constructor(args)
     {
-        this.offset = args.offset;
         this.name = args.name;
         this.tags = args.tags;
         this.anchor = args.anchor;
+        this.offset = args.offset;
         this.zlevel = args.zlevel;
     }
 
 
-    moveTo(mPos, mOffset, doSnapping=true){
+    moveTo(scr, mPos, mOffset, doSnapping=true){
         var targetx = mPos.x-mOffset.x;
         var targety = mPos.y-mOffset.y;
         if(doSnapping){

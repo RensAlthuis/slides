@@ -2,12 +2,12 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-class Screen{
+module.exports = class Screen{
 
-    constructor(){
+    constructor(screenName){
         //variables
         this.anchors = [];
-        this.canvas = document.getElementById("myCanvas");
+        this.canvas = document.getElementById(screenName);
         this.context = this.canvas.getContext('2d');
         this.gridSize = {"width":2, "height":2};
         this.objects = [];
@@ -25,7 +25,6 @@ class Screen{
         window.addEventListener("mousedown", this.mouseClicked);
         window.addEventListener("mousemove", this.mouseDragged);
         events.on('addObject', this.addObject);
-
         this.onResize();
     }
 
@@ -35,17 +34,19 @@ class Screen{
     }
 
     drawBackground(){
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         this.context.fillStyle = '#000000';
         this.context.fillRect(0,0, window.innerWidth, window.innerHeight);
     };
 
     drawGrid(){
         var ctx = this.context;
-
         ctx.strokeStyle = '#FFFFFF';
-
         var dashLength = 10;
         ctx.setLineDash([dashLength]);
+
+        //vertical gridlines 
         for(var x = 1; x < this.gridSize.width; x++){
             if(x == this.gridSize.width/2)
                 ctx.setLineDash([]);
@@ -59,6 +60,7 @@ class Screen{
             ctx.stroke();
         }
 
+        //horizontal gridlines 
         for(var y = 1; y < this.gridSize.height; y++){
             if(y == this.gridSize.height/2)
                 ctx.setLineDash([]);
@@ -86,8 +88,6 @@ class Screen{
     };
 
     onResize(){
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
         this.drawCanvas();
     };
 
@@ -131,11 +131,9 @@ class Screen{
         //dragging only left button
         if (ev.buttons == 1){
             if(this.curClickedObj != null){
-                this.curClickedObj.obj.moveTo({x:ev.clientX, y:ev.clientY}, this.curClickedObj.offset, !ev.shiftKey);
+                this.curClickedObj.obj.moveTo(this, {x:ev.clientX, y:ev.clientY}, this.curClickedObj.offset, !ev.shiftKey);
                 this.drawCanvas();
             }
         }
     }
 }
-
-scr = new Screen();
