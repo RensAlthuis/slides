@@ -64,7 +64,7 @@ module.exports = class GBF {
             var orImgD = new ImageData(Uint8ClampedArray.from(pixels.data), this.width, this.height);
             this.img = BlackWhite.toBlackWhite(orImgD, this.width, this.height, thresh);
             this.outlineImg = BlackWhite.toOutlineImage(this.img);
-            this.outlines = BlackWhite.getOutlinesFromImage(this.outlineImg);
+            this.outlines = BlackWhite.getOutlinesFromImage(this.outlineImg).outlines;
             resolve("ok");
         }));
     }
@@ -73,6 +73,7 @@ module.exports = class GBF {
         var counter = 0; //Counts the amount of duplicate pixels in the sequence, and groups them together
         var last = 0; //Last checked value, starting at black
         var tempAr = [this.width, this.height];
+
         //compress bwimg 
         for (var i = 0; i < this.img.data.length; i += 4) {
             if (this.img.data[i] == last)

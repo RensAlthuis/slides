@@ -1,14 +1,14 @@
 module.exports = function (){
     return {
     "gimg":function gimg(cli, args){
-        if(!(args.length == 1 || args.length == 2))
+        if(args.length == 1 || args.length == 2)
         {
-            console.log("Incorrect argument count "+args.length);
-            return false;
+            events.emit('generateImage', ...args);
+            return true;
         }
 
-        events.emit('generateImage', ...args);
-        return true;
+        console.log("Incorrect argument count "+args.length);
+        return false;
     },
 
     "limg":function limg(cli, args){
